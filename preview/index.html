@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Opus Bloc Mobile Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: brand-dark stage — info column left, life-size phone right; phones get the bare app full-screen. Deliberate single dark look. */
+:root {
+  --stage: #111213;
+  --panel-line: #ffffff1f;
+  --fg: #ffffff;
+  --fg-muted: #ffffffa6;
+  --brass: #b3924f;
+  --bezel: #050505;
+  --display: "Cormorant Garamond", "Times New Roman", serif;
+  --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; }
+body {
+  background: var(--stage);
+  color: var(--fg);
+  font: 500 15px/1.45 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+.stage {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(32px, 6vw, 96px);
+  padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ── info column ── */
+.info { width: min(360px, 100%); display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.brand { display: flex; align-items: center; gap: 12px; font: 600 13px var(--sans); letter-spacing: .2em; }
+.brand img { width: 42px; height: 42px; margin: -7px; clip-path: inset(16.67%); }
+.brand b { color: var(--brass); font-weight: 600; }
+.eyebrow { margin: 0 0 10px; font: 600 11px/1.4 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted); }
+h1 { margin: 0; font: 300 clamp(40px, 4vw, 56px)/1 var(--display); letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
+.lead { margin: 14px 0 0; color: var(--fg-muted); max-width: 34ch; }
+.codes { border-top: 1px solid var(--panel-line); }
+.codes div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--panel-line); }
+.codes dt { color: var(--fg-muted); font-size: 13px; }
+.codes dd { margin: 0; display: flex; align-items: center; gap: 10px; font: 500 16px var(--sans); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.copy {
+  font: 600 10px var(--sans); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--fg); background: transparent; border: 1px solid var(--panel-line);
+  border-radius: 999px; padding: 6px 10px; cursor: pointer;
+}
+.copy:hover { border-color: var(--fg); }
+.restart {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 0 22px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--fg); background: transparent; color: var(--fg);
+  font: 600 12px var(--sans); letter-spacing: .08em; text-transform: uppercase;
+  transition: background-color .4s cubic-bezier(.7,0,.3,1), color .4s cubic-bezier(.7,0,.3,1);
+}
+.restart:hover { background: var(--fg); color: var(--stage); }
+.note { margin: 0; font-size: 12px; color: var(--fg-muted); }
+button:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
+
+/* ── phone ── */
+.phone-slot { flex: none; position: relative; }
+.phone {
+  position: absolute; top: 0; left: 0; transform-origin: top left;
+  width: 414px; height: 868px; padding: 12px;
+  border-radius: 64px; background: var(--bezel);
+  box-shadow: 0 0 0 1px #ffffff26, 0 0 0 2px #000, 0 40px 80px -20px #000000cc;
+}
+.phone::before, .phone::after { /* side buttons */
+  content: ""; position: absolute; width: 3px; border-radius: 2px; background: #2a2a2a;
+}
+.phone::before { left: -3px; top: 180px; height: 64px; box-shadow: 0 84px 0 #2a2a2a; }
+.phone::after { right: -3px; top: 220px; height: 96px; }
+.screen {
+  position: relative; width: 390px; height: 844px; overflow: hidden;
+  border-radius: 52px; background: #fff; display: flex; flex-direction: column;
+}
+.status {
+  --sb-bg: #ffffff; --sb-fg: #1a1919;
+  flex: none; height: 50px; position: relative; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 30px 0 38px; background: var(--sb-bg); color: var(--sb-fg);
+  font: 600 15px var(--sans); letter-spacing: -.01em; transition: background-color .2s, color .2s;
+}
+.island { position: absolute; left: 50%; top: 11px; width: 122px; height: 35px; margin-left: -61px; border-radius: 20px; background: #000; }
+.status svg { display: block; }
+.icons { display: flex; align-items: center; gap: 6px; }
+iframe { flex: 1; width: 100%; border: 0; display: block; background: #fff; }
+.home-bar { position: absolute; left: 50%; bottom: 8px; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: #1a191966; pointer-events: none; }
+
+/* ── on a real phone: the app itself, full screen ── */
+@media (max-width: 600px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  .info, .status, .home-bar, .phone::before, .phone::after { display: none; }
+  .stage { padding: 0; display: block; height: 100%; }
+  .phone-slot { width: 100% !important; height: 100% !important; }
+  .phone { position: static; transform: none !important; width: 100%; height: 100%; padding: 0; border-radius: 0; box-shadow: none; background: #fff; }
+  .screen { width: 100%; height: 100%; border-radius: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main class="stage">
+  <section class="info" aria-label="About this preview">
+    <div class="brand"><img src="logo.png" alt=""> OPUS <b>BLOC</b></div>
+    <div>
+      <p class="eyebrow">Mobile app preview</p>
+      <h1>Opus Bloc</h1>
+      <p class="lead">Fractional real estate, from first launch to first investment. Tap through the phone to explore the full app.</p>
+    </div>
+    <div>
+      <p class="eyebrow">Codes for this preview</p>
+      <dl class="codes">
+        <div><dt>Verification code</dt><dd><span id="otp">123456</span><button class="copy" type="button" data-copy="123456">Copy</button></dd></div>
+        <div><dt>Referral code (optional)</dt><dd><span>OPUS2025</span><button class="copy" type="button" data-copy="OPUS2025">Copy</button></dd></div>
+        <div><dt>PAN format</dt><dd>ABCDE1234F</dd></div>
+        <div><dt>PAN image</dt><dd>Any JPG or PNG</dd></div>
+      </dl>
+    </div>
+    <button class="restart" id="restart" type="button">Restart from the beginning</button>
+    <p class="note">All properties, figures and checks are sample data. Nothing you enter leaves this browser.</p>
+  </section>
+
+  <div class="phone-slot" id="slot">
+    <div class="phone" id="phone">
+      <div class="screen">
+        <div class="status" id="status" aria-hidden="true">
+          <span>9:41</span>
+          <span class="island"></span>
+          <span class="icons">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.6c2.2 0 4.2.8 5.7 2.2l1.2-1.3A10 10 0 0 0 8 .8 10 10 0 0 0 1.1 3.5l1.2 1.3A8.2 8.2 0 0 1 8 2.6Zm0 3.5c1.2 0 2.4.5 3.3 1.3l1.2-1.3A6.6 6.6 0 0 0 8 4.3c-1.7 0-3.3.6-4.5 1.8l1.2 1.3c.9-.8 2.1-1.3 3.3-1.3Zm0 3.4c-.5 0-1 .2-1.3.5L8 11.4l1.3-1.4c-.3-.3-.8-.5-1.3-.5Z"/></svg>
+            <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".4"/></svg>
+          </span>
+        </div>
+        <iframe id="app" src="app/index.html" title="Opus Bloc mobile app"></iframe>
+        <span class="home-bar"></span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const PHONE_W = 414, PHONE_H = 868;
+  const slot = document.getElementById("slot");
+  const phone = document.getElementById("phone");
+  const frame = document.getElementById("app");
+  const status = document.getElementById("status");
+
+  // Fit the life-size phone to short desktop windows.
+  function fit() {
+    const s = Math.min(1, (window.innerHeight - 48) / PHONE_H);
+    phone.style.transform = `scale(${s})`;
+    slot.style.width = `${PHONE_W * s}px`;
+    slot.style.height = `${PHONE_H * s}px`;
+  }
+  addEventListener("resize", fit);
+  fit();
+
+  // Status bar takes the colour of the app screen beneath it.
+  function tint() {
+    try {
+      const doc = frame.contentDocument;
+      let el = doc && doc.elementFromPoint(195, 1);
+      let bg = "rgb(255, 255, 255)";
+      while (el) {
+        const c = getComputedStyle(el).backgroundColor;
+        if (c && !/rgba\(.*,\s*0\)$/.test(c) && c !== "transparent") { bg = c; break; }
+        el = el.parentElement;
+      }
+      const [r, g, b] = bg.match(/\d+(\.\d+)?/g).map(Number);
+      const dark = 0.2126 * r + 0.7152 * g + 0.0722 * b < 128;
+      status.style.setProperty("--sb-bg", bg);
+      status.style.setProperty("--sb-fg", dark ? "#ffffff" : "#1a1919");
+    } catch (_) { /* frame not ready */ }
+  }
+  setInterval(tint, 250);
+
+  // Restart: clear the app's saved progress in this browser, then reload it.
+  document.getElementById("restart").addEventListener("click", () => {
+    try { frame.contentWindow.localStorage.clear(); frame.contentWindow.sessionStorage.clear(); } catch (_) {}
+    frame.src = "app/index.html#/intro";
+    frame.contentWindow && frame.contentWindow.location.reload();
+  });
+
+  // Copy buttons (fall back to selecting the text).
+  document.querySelectorAll(".copy").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const done = () => { btn.textContent = "Copied"; setTimeout(() => (btn.textContent = "Copy"), 1500); };
+      const select = () => {
+        const range = document.createRange();
+        range.selectNodeContents(btn.previousElementSibling);
+        const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(btn.dataset.copy).then(done, select);
+      else select();
+    });
+  });
+})();
+</script>
+</body>
+</html>

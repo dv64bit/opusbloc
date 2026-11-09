@@ -1,0 +1,10 @@
+{
+  "description": "Explore premium real estate opportunities, manage fractional property investments, track portfolio income, and complete account and identity verification in one place.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
