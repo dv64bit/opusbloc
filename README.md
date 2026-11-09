@@ -1,6 +1,6 @@
 # Opus Bloc onboarding demo
 
-**Live mobile preview:** https://darshanverma.me/opusbloc/ (phone mockup on desktop, full-screen on phones). Deployed by `.github/workflows/pages.yml` on every push to `main`; the mockup page lives in `preview/`.
+**Live mobile preview:** https://dv64bit.github.io/opusbloc/ (phone mockup on desktop, full-screen on phones). Deployed by `.github/workflows/pages.yml` on every push to `main`; the mockup page lives in `preview/`.
 
 A mobile-first React and Vite implementation of the Opus Bloc account setup, identity verification, account security, and sample investment dashboard experience.
 
