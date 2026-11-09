@@ -307,9 +307,9 @@
   -webkit-backdrop-filter: blur(12px);
 }
 .hero-image {
-  /* leave the primary CTA peeking above the fold on phones */
-  height: calc(100svh - var(--space-16));
-  min-height: 600px;
+  /* both intro CTAs fit on first view: body top pad + 2 buttons + gap + breathing room */
+  height: calc(100svh - (var(--space-8) + 2 * var(--btn-h) + var(--space-3) + var(--space-6)));
+  min-height: 520px;
   max-height: 1080px;
   background-size: cover;
   background-position: center;
