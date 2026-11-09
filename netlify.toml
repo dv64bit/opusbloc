@@ -1,0 +1,10 @@
+# Netlify serves the phone-mockup preview by default:
+#   /       → preview/index.html (phone frame on desktop, full-screen app on phones)
+#   /app/   → the app itself, built with relative paths
+[build]
+  command = "pnpm run build:preview"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "10.34.3"

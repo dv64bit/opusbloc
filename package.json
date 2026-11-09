@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:preview": "vite build --base ./ --outDir dist/app --emptyOutDir && cp preview/index.html preview/logo.png dist/",
     "preview": "vite preview",
     "format": "oxfmt"
   },

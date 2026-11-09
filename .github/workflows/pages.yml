@@ -30,12 +30,11 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec vite build --base ./ --outDir _site/app --emptyOutDir
-      - run: cp preview/index.html preview/logo.png _site/
+      - run: pnpm run build:preview # same output Netlify serves (see netlify.toml)
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
   deploy:
     needs: build
